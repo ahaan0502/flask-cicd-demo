@@ -22,6 +22,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Zip deployment package
+        run: zip -r deploy.zip . -x "*.git*" -x "venv/*"
+
       - name: Deploy to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v21
         with:
@@ -31,4 +34,4 @@ jobs:
           application_name: flask-cicd-demo
           environment_name: Flask-cicd-demo-env
           version_label: ${{ github.sha }}
-          deployment_package: .
+          deployment_package: deploy.zip
